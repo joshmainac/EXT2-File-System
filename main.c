@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
         else if (strcmp(cmd, "unlink") == 0)
             my_unlink();
         else if (strcmp(cmd, "symlink") == 0)
-            my_symlink2();
+            my_symlink();
         else if (strcmp(cmd, "readlink") == 0)
             my_readlink();
         else if (strcmp(cmd, "utime") == 0)

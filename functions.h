@@ -75,8 +75,8 @@ int my_link();
 
 int my_unlink();
 int my_ksymlink(MINODE *pip, char child[256]);
+
 int my_symlink();
-int my_symlink2();
 int my_readlink();
 
 int my_utime();
