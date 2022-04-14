@@ -1,7 +1,6 @@
 # cs360-finalProject-template
 
 Student: Joshua Long
-Student:
 
 ## Requirements:
 

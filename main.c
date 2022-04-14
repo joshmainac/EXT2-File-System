@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     if ((fd = open(disk, O_RDWR)) < 0)
     {
         printf("open %s failed\n", disk);
+        printf("%s is locked. DO chmod 0777 %s\n", disk);
         exit(1);
     }
 
