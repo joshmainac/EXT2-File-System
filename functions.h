@@ -82,5 +82,24 @@ int my_readlink();
 int my_utime();
 int my_stat();
 int my_chmod();
-
+/////open_close.c
+int open_file();
+int myopen(char *filename, int flags);
+int my_truncate(MINODE *mip);
+int close_file();
+int myclose(int fd);
+int my_lseek(int fd, int position);
+int lseek_file();
+int my_pfd();
+int my_dup(int fd);
+int my_dup2(int fd, int gd);
+// read_write.c
+int myread(int fd, char *buf, int nbytes);
+int read_file();
+int cat_file();
+//
+int write_file();
+int mywrite(int fd, char buf[], int nbytes);
+int my_cp();
+int my_mv();
 #endif

@@ -62,6 +62,14 @@ int tokenize(char *pathname)
 }
 
 // return minode pointer to loaded INODE
+// summary
+// pass in ino
+//
+//
+//
+//
+//
+
 MINODE *iget(int dev, int ino)
 {
    int i;
@@ -70,6 +78,9 @@ MINODE *iget(int dev, int ino)
    int blk, offset;
    INODE *ip;
 
+   // go through minode array
+   // if ref count not 0 & dev & ino match
+   // increase ref count and return that inode
    for (i = 0; i < NMINODE; i++)
    {
       mip = &minode[i];
@@ -81,6 +92,7 @@ MINODE *iget(int dev, int ino)
       }
    }
 
+   // make new minode
    for (i = 0; i < NMINODE; i++)
    {
       mip = &minode[i];

@@ -111,6 +111,24 @@ int main(int argc, char *argv[])
             my_stat();
         else if (strcmp(cmd, "chmod") == 0)
             my_chmod();
+        else if (strcmp(cmd, "open") == 0)
+            open_file();
+        else if (strcmp(cmd, "close") == 0)
+            close_file();
+        else if (strcmp(cmd, "lseek") == 0)
+            lseek_file();
+        else if (strcmp(cmd, "pfd") == 0)
+            my_pfd();
+        else if (strcmp(cmd, "read") == 0)
+            read_file();
+        else if (strcmp(cmd, "cat") == 0)
+            cat_file();
+        else if (strcmp(cmd, "write") == 0)
+            write_file();
+        else if (strcmp(cmd, "cp") == 0)
+            my_cp();
+        else if (strcmp(cmd, "mv") == 0)
+            my_mv();
         else if (strcmp(cmd, "quit") == 0)
             quit();
     }
@@ -126,6 +144,7 @@ int quit()
         if (mip->refCount > 0)
             iput(mip);
     }
+    printf("quitting\n");
     exit(0);
 }
 

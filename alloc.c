@@ -118,8 +118,12 @@ int balloc(int dev)
             put_block(dev, bmap, buf);
 
             decFreeBlocks(dev);
+            // mycode
+            memset(buf, 0, BLKSIZE); // buf to 0
+            put_block(dev, i + 1, buf);
+            //
 
-            printf("allocated block = %d\n", i + 1); // bits count from 0; ino from 1
+            // printf("allocated block = %d\n", i + 1); // bits count from 0; ino from 1
             return i + 1;
         }
     }
