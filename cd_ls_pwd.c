@@ -4,6 +4,7 @@
 int cd()
 {
   printf("cd: under construction READ textbook!!!!\n");
+  printf("From running->cwd = mip[%d,%d]\n", running->cwd->dev, running->cwd->ino);
 
   // READ Chapter 11.7.3 HOW TO chdir
   //(1). int ino = getino(pathname); // return error if ino=0
@@ -17,19 +18,27 @@ int cd()
 
   //
   //(2). MINODE *mip = iget(dev, ino);
+  printf("cd: dev = %d\n", dev);
+  printf("cd: ino = %d\n", ino);
   MINODE *mip = iget(dev, ino);
   //(3). Verify mip->INODE is a DIR // return error
   // if not DIR
-  if (!S_ISDIR(mip->INODE.i_mode))
+  if (mip->INODE.i_mode & 0x4000) // This somehow conflics with new device
+  {
+    printf("Is a DIR\n");
+  }
+  else
   {
     printf("Not a directory\n");
     iput(mip);
+    printf("running->cwd = mip[%d,%d]\n", running->cwd->dev, running->cwd->ino);
     return 0;
   }
   //(4). iput(running->cwd); // release old cwd
   iput(running->cwd);
   //(5). running->cwd = mip; // change cwd to mip
   running->cwd = mip;
+  printf("running->cwd = mip[%d,%d]\n", running->cwd->dev, running->cwd->ino);
 }
 
 int ls_file(MINODE *mip, char *name)

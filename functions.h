@@ -102,4 +102,12 @@ int write_file();
 int mywrite(int fd, char buf[], int nbytes);
 int my_cp();
 int my_mv();
+// mount_unmount.c
+int mount();
+int umount();
+// mydebug.c
+int mount_table();
+int my_mip();
+int my_dev();
+
 #endif

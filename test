@@ -1,0 +1,8 @@
+#! /bin/bash
+
+sudo mount diskimage /mnt           
+sudo ls -l /mnt                   # should see all files
+sudo diff /mnt/tiny /mnt/newtiny  # diff will show differences, if ANY
+sudo umount /mnt
+
+

@@ -21,7 +21,8 @@ int init();
 int quit();
 int mount_root();
 
-char *disk = "diskimage";
+// char *disk = "diskimage";
+char *disk = "mydisk";
 
 int main(int argc, char *argv[])
 {
@@ -129,6 +130,16 @@ int main(int argc, char *argv[])
             my_cp();
         else if (strcmp(cmd, "mv") == 0)
             my_mv();
+        else if (strcmp(cmd, "mount") == 0)
+            mount();
+        else if (strcmp(cmd, "umount") == 0)
+            umount();
+        else if (strcmp(cmd, "mt") == 0)
+            mount_table();
+        else if (strcmp(cmd, "mip") == 0)
+            my_mip();
+        else if (strcmp(cmd, "dev") == 0)
+            my_dev();
         else if (strcmp(cmd, "quit") == 0)
             quit();
     }

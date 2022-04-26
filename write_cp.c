@@ -191,6 +191,7 @@ int my_cp()
     {
         count++;
         // printf("cp count = %d\n", count);
+        // buf[nbytes] = '\0'; // as a null terminated string
         mywrite(dest_fd, buf, nbytes);
     }
 

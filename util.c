@@ -102,6 +102,7 @@ MINODE *iget(int dev, int ino)
          mip->refCount = 1;
          mip->dev = dev;
          mip->ino = ino;
+         // mip->mounted = 0;
 
          // get INODE of ino to buf
          blk = (ino - 1) / 8 + iblk;
@@ -228,6 +229,7 @@ int getino(char *pathname)
 
    for (i = 0; i < n; i++)
    {
+      printf("i=%d n=%d\n", i, n);
       printf("===========================================\n");
       printf("getino: i=%d name[%d]=%s\n", i, i, name[i]);
 
@@ -241,7 +243,50 @@ int getino(char *pathname)
          return 0;
       }
       iput(mip);
+      printf("From [%d,%d]\n", mip->dev, mip->ino);
+      printf("To [%d,%d]\n", dev, ino);
+      // Upward traversal for mounted DIR
+      if (mip->dev == dev && mip->ino == ino && mip->dev != 3 && mip->ino == 2)
+      {
+         printf("getino() Enter upward traversal\n");
+
+         for (int j = 0; j < 8; j++)
+         {
+            if (mountTable[j].dev == dev)
+            {
+               MINODE *mymip = mountTable[i].mounted_inode; //// This points at original DIR mip
+               dev = mymip->dev;                            // mounted DIR's dev
+               ino = mymip->ino;                            // mounted DIR's ino
+               printf("my new dev = %d and ino = %d\n", dev, ino);
+            }
+         }
+         mip = iget(dev, ino);
+         ino = search(mip, "..");
+         iput(mip);
+         mip = iget(dev, ino);
+         continue;
+      }
+
       mip = iget(dev, ino);
+      // Downward traversal for mounted DIR
+      if (mip->mounted) // somehow always mounted when a/mnt
+      {
+         printf("getino() Enter downwar traversal\n");
+         printf("getino: %s is mounted\n", name[i]);
+         for (int j = 0; j < 8; j++)
+         {
+            if (mountTable[j].dev != 0 && mountTable[j].mounted_inode == mip)
+            {
+               // iput(mip);
+               dev = mountTable[j].dev; // 4
+               ino = 2;
+               mip = iget(dev, 2); // get root MINODE of mounted device
+            }
+         }
+         printf("i=%d n=%d\n", i, n);
+      }
+
+      //
    }
 
    iput(mip);

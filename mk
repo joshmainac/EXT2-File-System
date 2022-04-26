@@ -3,7 +3,9 @@ rm a.out 2> /dev/null
 
 gcc *.c
 
-cp disk2 diskimage
+cp mydisk diskimage
+cp mydisk2 disk2
+cp mydisk3 disk3
 
 
 ./a.out
