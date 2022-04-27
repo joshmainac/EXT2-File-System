@@ -110,6 +110,7 @@ int mount() /*  Usage: mount filesys mount_point OR mount */
             mountTable[i].mounted_inode = mip;             // This points ar DIR. declared in 4.
             strcpy(mountTable[i].name, my_file);           // device name
             strcpy(mountTable[i].mount_name, mount_point); // mounted DIR pathname
+
             break;
         }
     }

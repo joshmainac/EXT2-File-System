@@ -186,12 +186,15 @@ int read_file()
     printf("cmd=%s my_file=%s my_nbytes=%s\n", cmd, my_file, my_nbytes);
     int fd = atoi(my_file);
     int nbytes = atoi(my_nbytes);
-    char buf[nbytes + 1];
+
+    // char buf[nbytes + 1];
+    char buf[BLKSIZE];
+    char readbuf[BLKSIZE];
     // ASSUME: file is opened for RD or RW;
     // ask for a fd  and  nbytes to read;
     // verify that fd is indeed opened for RD or RW;
 
-    int actual = myread(fd, buf, nbytes);
+    int actual = myread(fd, buf, BLKSIZE);
 
     if (actual == -1)
     {
@@ -199,12 +202,15 @@ int read_file()
         return 0;
     }
 
-    buf[actual] = '\0';
-    printf("actual = %d buf = %s\n", actual, buf);
+    memcpy(readbuf, buf, nbytes);
+    readbuf[nbytes] = '\0';
+
+    printf("actual = %d \n", actual);
     printf("********* read file %d %d ********* \n", fd, nbytes);
-    printf("%s\n", buf);
+    printf("%s\n", readbuf);
     printf("***********************************\n");
     printf("actual # of char read = %d\n", actual);
+    lseek_file();
     return actual;
 }
 

@@ -1,0 +1,15 @@
+#! /bin/bash
+
+sudo mount disk2 /mnt
+
+echo diff large with copied newlarge 
+sudo diff /mnt/large  /mnt/newlarge
+
+
+sudo umount /mnt
+
+
+
+
+
+
