@@ -1,6 +1,6 @@
                This will be YOUR DEMO record.
 
-NAME Joshua Long ID 11631741 
+NAME Joshua Long ID 11631741 !
 
 0. Do EECS online course evaluation. 
 1. Fill in NAMEs, IDs. Return to TA before 4-27-2022.
