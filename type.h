@@ -47,9 +47,9 @@ typedef struct oft
 typedef struct proc
 {
   struct proc *next;
-  int pid; // process ID
-  int uid; // user ID
-  int gid;
+  int pid;     // process ID
+  int uid;     // user ID
+  int gid;     // ignore this
   MINODE *cwd; // CWD directory pointer
   OFT *fd[NFD];
 } PROC;

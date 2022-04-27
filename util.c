@@ -154,6 +154,9 @@ void iput(MINODE *mip)
    ip = (INODE *)buf + offset;      // ip points at INODE
    *ip = mip->INODE;                // copy INODE to inode in block
    put_block(mip->dev, block, buf); // write back to disk
+
+   // not sure if this is corect
+   mip->dirty = 0;
    // midalloc(mip);
 }
 

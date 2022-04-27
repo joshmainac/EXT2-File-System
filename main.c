@@ -22,7 +22,8 @@ int quit();
 int mount_root();
 
 // char *disk = "diskimage";
-char *disk = "mydisk";
+// char *disk = "diskimage";
+char *disk = "disk2";
 
 int main(int argc, char *argv[])
 {
@@ -140,6 +141,14 @@ int main(int argc, char *argv[])
             my_mip();
         else if (strcmp(cmd, "dev") == 0)
             my_dev();
+        else if (strcmp(cmd, "ps") == 0)
+            my_ps();
+        else if (strcmp(cmd, "cs") == 0)
+            my_cs();
+        else if (strcmp(cmd, "ac") == 0)
+            my_ac();
+        else if (strcmp(cmd, "ch") == 0)
+            check_dir();
         else if (strcmp(cmd, "quit") == 0)
             quit();
     }

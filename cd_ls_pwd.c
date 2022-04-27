@@ -52,12 +52,15 @@ int ls_file(MINODE *mip, char *name)
   char *t1 = "xwrxwrxwr-------";
   char *t2 = "----------------";
   int i;
-
-  if ((mode & 0xF000) == 0x8000) // if (S_ISREG())
+  //(hex)F000 == (int)61440 == (oct)170000 == (bin)1111000000000000
+  //(int)32768 == (hex,16,x)8000 ==(oct,8,o)10000 == (bin)1000000000000000
+  //(int)16384 == (hex,16,x)4000 ==(oct,8,o)40000 == (bin)0100000000000000
+  //(int)40960 == (hex,16,x)A000 ==(oct,8,o)120000 == (bin)1010000000000000
+  if ((mode & 0xF000) == 0x8000) // if (S_ISREG())->
     printf("%c", '-');
-  if ((mode & 0xF000) == 0x4000) // if (S_ISDIR())
+  if ((mode & 0xF000) == 0x4000) // if (S_ISDIR())->
     printf("%c", 'd');
-  if ((mode & 0xF000) == 0xA000) // if (S_ISLNK())
+  if ((mode & 0xF000) == 0xA000) // if (S_ISLNK())->
     printf("%c", 'l');
 
   for (i = 8; i >= 0; i--)

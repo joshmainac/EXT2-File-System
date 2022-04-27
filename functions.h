@@ -48,6 +48,7 @@ int incFreeBlocks(int dev);
 int clr_bit(char *buf, int bit);
 int my_idalloc(int dev, int ino);
 int my_bdalloc(int dev, int ino);
+int midalloc(MINODE *mip); // release a used minode
 
 /* cd_ls_pwd.c */
 int cd();
@@ -105,9 +106,14 @@ int my_mv();
 // mount_unmount.c
 int mount();
 int umount();
+int my_ps();
+int my_cs();
+int my_access(char *filename, char target_mode);
 // mydebug.c
 int mount_table();
 int my_mip();
 int my_dev();
+int check_dir();
+int my_ac();
 
 #endif

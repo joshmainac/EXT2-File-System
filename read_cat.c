@@ -150,16 +150,24 @@ int myread(int fd, char *buf, int nbytes)
 
         get_block(mip->dev, blk, readbuf);
         /* copy from startByte to buf[ ], at most remain bytes in this block */
+        // int startByte = oftp->offset % BLKSIZE;->offset that does not fill a block
         char *cp = readbuf + startByte;
         int remain = BLKSIZE - startByte;
+        // char *cq = buf;
+        // int myread(int fd, char *buf, int nbytes)
+        // read data into buf
         while (remain > 0)
         {
+            // printf("cp1 = %c\n", *cp);
             *cq++ = *cp++;  // copy byte from readbuf[] into buf[]
             oftp->offset++; // advance offset
             count++;        // inc count as number of bytes read
             avil--;
             nbytes--;
             remain--;
+            // printf("cp2q = %s\n", readbuf);
+            // printf("cp3 = %c\n", *cp);
+            //   printf("cp = %s\n", readbuf);
             if (nbytes <= 0 || avil <= 0)
                 break;
         }
@@ -222,14 +230,14 @@ int cat_file()
     printf("\n");
     printf("********* cat file %d %d ********* ********* ********* *********\n", fd, BLKSIZE);
     int count = n;
-    while (n > 0)
+    while (n)
     {
+
         mybuf[n] = 0; // as a null terminated string
 
         // printf("%s", mybuf);   <=== THIS works but not good
 
         printf("%s", mybuf);
-
         // spit out chars from mybuf[] but handle \n properly;
         n = myread(fd, mybuf, BLKSIZE);
         count = count + n;

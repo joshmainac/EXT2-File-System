@@ -250,6 +250,8 @@ int my_mkdir()
 
     //(5)
     // increment parent INODE's links_count by 1 and mark pmip dirty;
+    pmip->INODE.i_links_count++;
+    pmip->dirty = 1;
     iput(pmip);
 }
 

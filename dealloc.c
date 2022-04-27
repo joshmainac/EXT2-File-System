@@ -55,3 +55,8 @@ int my_bdalloc(int dev, int ino)
     // update free inode count in SUPER and GD
     incFreeBlocks(dev);
 }
+
+int midalloc(MINODE *mip) // release a used minode
+{
+    mip->refCount = 0;
+}

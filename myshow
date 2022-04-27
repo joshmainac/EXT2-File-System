@@ -1,0 +1,10 @@
+#! /bin/bash
+
+
+
+
+sudo mount disk2 /mnt           
+sudo ls -l /mnt                   # should see all files
+sudo diff /mnt/huge /mnt/newhuge  # diff will show differences, if ANY
+sudo emacs /mnt/newhuge           # edit the file
+sudo emacs /mnt/huge    # copy the file back

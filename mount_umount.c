@@ -198,3 +198,233 @@ int umount()
     // 4. return 0 for SUCCESS;
     return 0;
 }
+
+// file  ugs? owner group other
+// 0100 000 000 000 000
+// ----------------- Define these bit patterns -----------------------
+// ownerR: b'0000 000 |100 000 000|' = 0000 0001 0000 0000 = 0x0100
+// ownerW: b'0000 000 |010 000 000|' = 0000 0000 1000 0000 = 0x0080
+// ownerX: b'0000 000 |001 000 000|' = 0000 0000 0100 0000 = 0x0040
+// -------------------------------------------------------------------
+
+// 0000 000 111 000 000(2) == 1C0(16)
+
+// ----------------- Define these bit patterns -----------------------
+// otherR: b'0000 000 |000 000 100|'= 0000 0000 0000 0100 = 0x0004
+// otherW: b'0000 000 |000 000 010|' = 0000 0000 0000 0010 = 0x0002
+// otherX: b'0000 000 |000 000 001|' = 0000 0000 0000 0001 = 0x0001
+// -------------------------------------------------------------------
+
+// 0000 000 000 000 111(2) == 7(16)
+
+//'0000 000 100 000 000 = |0000 |000 1 |00 00 |0 000
+// return 1 if can access, 0 if not
+//(char *filename, char mode)
+int my_access(char *filename, char target_mode)
+{
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@  access()\n");
+    char cmd[256], my_file[256], my_mode[256]; // ge.t this from line
+    sscanf(line, "%s %s %s", cmd, my_file, my_mode);
+    printf("cmd=%s my_file=%s my_mode=%s \n", cmd, my_file, my_mode);
+    strcpy(my_file, filename);
+    strcpy(my_mode, &target_mode);
+
+    int r = 0;
+
+    if (running->uid == 0)
+    {
+        // uid = 0 -->super user, always ok
+        printf("uid = 0 = superuser. return 1\n");
+
+        return 1;
+    }
+
+    // NOT SUPERuser: get file's INODE
+    int ino = getino(my_file);
+    MINODE *mip = iget(dev, ino);
+    u16 mode = mip->INODE.i_mode;
+    ////////////////////////////////////////////////////uid == uid
+    if (mip->INODE.i_uid == running->uid)
+    {
+        // uid = owner [000] 000 000
+        //  r = (check owner's rwx with mode);  // by tst_bit()
+        printf("uid = owner\n");
+
+        if (strcmp(my_mode, "r") == 0)
+        {
+
+            // r = tst_bit(mip->INODE.i_mode, 0);
+            // 0000 000 100 000 000(2) == 0x0100(16)  remove except owner-R
+            printf("chcking if owner-r is permitted\n");
+            if ((mode & 0x0100) == 0x0100)
+            {
+                r = 1;
+
+                printf("owner-r is OK. return 1\n");
+                return r;
+            }
+            else
+            {
+                printf("owner-r is NOT OK. return 0\n");
+                r = 0;
+                return r;
+            }
+        }
+
+        if (strcmp(my_mode, "w") == 0)
+        {
+            // r = tst_bit(mip->INODE.i_mode, 0);
+            // 0000 000 010 000 000(2) == 0x0100(16)  remove except owner-R
+            printf("chcking if owner-w is permitted\n");
+            if ((mode & 0x0080) == 0x0080)
+            {
+                r = 1;
+
+                printf("owner-r is OK. return 1\n");
+                return r;
+            }
+            else
+            {
+                printf("owner-r is NOT OK. return 0\n");
+                r = 0;
+                return r;
+            }
+        }
+
+        if (strcmp(my_mode, "x") == 0)
+        {
+            // r = tst_bit(mip->INODE.i_mode, 0);
+            // 0000 000 001 000 000(2) == 0x0100(16)  remove except owner-R
+            printf("chcking if owner-x is permitted\n");
+            if ((mode & 0x0040) == 0x0040)
+            {
+                r = 1;
+
+                printf("owner-r is OK. return 1\n");
+                return r;
+            }
+            else
+            {
+                printf("owner-r is NOT OK. return 0\n");
+                r = 0;
+                return r;
+            }
+        }
+    }
+    ////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////uid != uid
+    if (mip->INODE.i_uid != running->uid)
+    {
+        // uid = owner [000] 000 000
+        //  r = (check owner's rwx with mode);  // by tst_bit()
+        printf("uid = other\n");
+
+        if (strcmp(my_mode, "r") == 0)
+        {
+
+            // r = tst_bit(mip->INODE.i_mode, 0);
+            // 0000 000 000 000 100(2) == 0x0004(16)  remove except owner-R
+            printf("chcking if other-r is permitted\n");
+            if ((mode & 0x0004) == 0x0004)
+            {
+                r = 1;
+
+                printf("other-r is OK. return 1\n");
+                return r;
+            }
+            else
+            {
+                printf("other-r is NOT OK. return 0\n");
+                r = 0;
+                return r;
+            }
+        }
+
+        if (strcmp(my_mode, "w") == 0)
+        {
+            // r = tst_bit(mip->INODE.i_mode, 0);
+            // 0000 000 000 000 010(2) == 0x0002(16)  remove except owner-R
+            printf("chcking if other-w is permitted\n");
+
+            if ((mode & 0x0002) == 0x0002)
+            {
+                r = 1;
+
+                printf("other-w is OK. return 1\n");
+                return r;
+            }
+            else
+            {
+                printf("other-w is NOT OK. return 0\n");
+                r = 0;
+                return r;
+            }
+        }
+
+        if (strcmp(my_mode, "x") == 0)
+        {
+            // r = tst_bit(mip->INODE.i_mode, 0);
+            // 0000 000 000 000 001(2) == 0x0001(16)  remove except owner-R
+            printf("chcking if other-x is permitted\n");
+            if ((mode & 0x0001) == 0x0001)
+            {
+                r = 1;
+
+                printf("other-x is OK. return 1\n");
+                return r;
+            }
+            else
+            {
+                printf("other-x is NOT OK. return 0\n");
+                r = 0;
+                return r;
+            }
+        }
+    }
+    ////////////////////////////////////////////////////
+
+    iput(mip);
+
+    return r;
+}
+
+// ps (show process queue as Pi[uid]==>}
+// m checks the process uid if match permission
+int my_ps()
+{
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@  ps()\n");
+
+    int i;
+    for (i = 0; i < NPROC; i++)
+    {
+        printf("p%d[uid=%d&pid=%d]=>", i, proc[i].uid, proc[i].pid);
+    }
+    printf("\n");
+    printf("current process = p%d\n", running->pid);
+
+    return 0;
+}
+
+// usually all inode->uid is 0 which is the root uid
+int my_cs()
+{
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@  cs()\n");
+    printf("running->pid=%d\n", running->pid);
+
+    if (running->pid == 0)
+    {
+        printf("switching from p0 to p1\n");
+        running = &proc[1];
+        running->uid = 1;
+        running->cwd = iget(dev, 2);
+    }
+    else
+    {
+        printf("switching from p1 to p0\n");
+        running = &proc[0];
+    }
+    printf("running->pid=%d\n", running->pid);
+
+    return 0;
+}

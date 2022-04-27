@@ -124,6 +124,7 @@ int my_symlink()
     // strcpy(child, basename(new_file));
     // make child under pmip
     my_kcreat(pmip, child);
+    iput(pmip);
 
     // get child ino
     int ino = getino(new_file);
@@ -133,7 +134,7 @@ int my_symlink()
     ip->i_size = strlen(old_file);
     memcpy(ip->i_block, old_file, strlen(old_file));
     mip->dirty = 1;
-    iput(mip);
+    // iput(mip);
 
     //(5)
     // increment parent INODE's links_count by 1 and mark pmip dirty;
