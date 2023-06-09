@@ -5,7 +5,7 @@
 * The project also involves optimizing reading and writing to indirect and double indirect blocks in order to improve performance.
 * The file system includes a mount and unmount function, and requires modifications to existing functions in order to support cross mounting points.
 * Disk I/O is performed using virtual disks that are simulated by Linux files, and accessed using Linux's read() and write() functions on a block size basis. These virtual disks can be created using Linux's mke2fs tool.
-* The file system operates using processes, with initial processes for a superuser and an ordinary user. The file system executes commands in order to perform file operations, including required commands for basic file system functionality (mounting and unmounting, creating and modifying directories and files, linking and unlinking) and optional minor commands (stat, chmod, utime)...
+* The file system operates using processes, with initial processes for a superuser and an ordinary user. The file system executes commands in order to perform file operations, including required commands for basic file system functionality (mounting and unmounting, creating and modifying directories and files, linking and unlinking) and optional minor commands (stat, chmod, utime)
 
 
 ## Requirements:
